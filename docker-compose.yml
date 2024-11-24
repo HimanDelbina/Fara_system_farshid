@@ -1,6 +1,8 @@
+version: '3.9'
+
 services:
   db:
-    image: postgres
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_DB: faraSystemDB
@@ -12,11 +14,12 @@ services:
       - "5432:5432"
     networks:
       - app-network
+
   web:
     build: .
     command: >
       sh -c "python manage.py migrate &&
-            python manage.py runserver 0.0.0.0:8000"
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
@@ -26,11 +29,11 @@ services:
     networks:
       - app-network
     environment:
-      - DEBUG=1
-      - DJANGO_DB_HOST=db
-      - DJANGO_DB_NAME=faraSystemDB
-      - DJANGO_DB_USER=postgres
-      - DJANGO_DB_PASSWORD=11193
+      DEBUG: "1"
+      DJANGO_DB_HOST: db
+      DJANGO_DB_NAME: faraSystemDB
+      DJANGO_DB_USER: postgres
+      DJANGO_DB_PASSWORD: 11193
 
 networks:
   app-network:
